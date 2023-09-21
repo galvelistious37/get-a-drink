@@ -8,9 +8,19 @@ const port = 3000
 /**
  * Get root to establish a home page
  */
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     let hMessage = "Get a Drink!"
-    res.render("index.ejs", {message: hMessage})
+    try{
+        const response = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+        const result = response.data
+        const drinkObj = result.drinks[0]
+        res.render("index.ejs", {
+            message: hMessage,
+            drink: drinkObj
+        })
+    } catch (error){
+        console.log(error.message)
+    }
 
 })
 
