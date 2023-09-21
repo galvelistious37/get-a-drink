@@ -5,9 +5,28 @@ import bodyParser from "body-parser"
 const app = express()
 const port = 3000
 
-app.get("/", (req, res) => {
+/**
+ * Get root to establish a home page
+ */
+app.get("/", async (req, res) => {
+    let hMessage = "Get a Drink!"
+    try{
+        const response = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+        const result = response.data
+        const drinkObj = result.drinks[0]
+        res.render("index.ejs", {
+            message: hMessage,
+            drink: drinkObj
+        })
+    } catch (error){
+        console.log(error.message)
+    }
+
 })
 
+/**
+ * Create a listener on a give port to run the application
+ */
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
 })
