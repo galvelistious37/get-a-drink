@@ -5,6 +5,7 @@ import bodyParser from "body-parser"
 const app = express()
 const port = 3000
 
+// The API this project is using:
 // https://www.thecocktaildb.com/api.php
 
 /**
