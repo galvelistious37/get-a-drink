@@ -5,6 +5,11 @@ import bodyParser from "body-parser"
 const app = express()
 const port = 3000
 
+// Define middleware to parse ejs sheets and use static files
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.static("public"))
+
+// The API this project is using:
 // https://www.thecocktaildb.com/api.php
 
 /**

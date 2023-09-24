@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get a Drink!</title>
-</head>
-<body>
+<%- include("partials/header.ejs") %>
     <h1>Sup... Time to <%= message%></h1>
     <p><%= drink.idDrink%><br /><%= drink.strDrink %></p>
     <img src="<%-drink.strDrinkThumb%>" alt="Some booze pic" />%>
