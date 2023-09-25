@@ -18,32 +18,22 @@ app.use(express.static("public"))
 app.get("/", async (req, res) => {
     let hMessage = "Get a Drink!"
     try{
+        // Call API to get JSON details for a random drink
         const response = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
-        // const result = response.data
+        
+        // Create local drinkObj from JSON 
         const drinkObj = response.data.drinks[0]
-        let ingredients = [
-            {amount: drinkObj.strMeasure1, ingredient: drinkObj.strIngredient1},
-            {amount: drinkObj.strMeasure2, ingredient: drinkObj.strIngredient2},
-            {amount: drinkObj.strMeasure3, ingredient: drinkObj.strIngredient3},
-            {amount: drinkObj.strMeasure4, ingredient: drinkObj.strIngredient4},
-            {amount: drinkObj.strMeasure5, ingredient: drinkObj.strIngredient5},
-            {amount: drinkObj.strMeasure6, ingredient: drinkObj.strIngredient6},
-            {amount: drinkObj.strMeasure7, ingredient: drinkObj.strIngredient7},
-            {amount: drinkObj.strMeasure8, ingredient: drinkObj.strIngredient8},
-            {amount: drinkObj.strMeasure9, ingredient: drinkObj.strIngredient9},
-            {amount: drinkObj.strMeasure10, ingredient: drinkObj.strIngredient10},
-            {amount: drinkObj.strMeasure11, ingredient: drinkObj.strIngredient11},
-            {amount: drinkObj.strMeasure12, ingredient: drinkObj.strIngredient12},
-            {amount: drinkObj.strMeasure13, ingredient: drinkObj.strIngredient13},
-            {amount: drinkObj.strMeasure14, ingredient: drinkObj.strIngredient14},
-            {amount: drinkObj.strMeasure15, ingredient: drinkObj.strIngredient15}
-        ]
+        
+        // Method call to pull ingredients and amounts from JSON
+        let ingredients = getIngredients(drinkObj)
 
+        // Send data to index.ejs template to be displayed on website
         res.render("index.ejs", {
             drink: drinkObj,
             ingredients: ingredients
         })
     } catch (error){
+        // Log any issues to the console
         console.log(error.message)
     }
 
@@ -56,23 +46,8 @@ app.post("/search", async (req, res) => {
         const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${req.body.input}`)
         // const result = response.data
         const drinkObj = response.data.drinks[0]
-        let ingredients = [
-            {amount: drinkObj.strMeasure1, ingredient: drinkObj.strIngredient1},
-            {amount: drinkObj.strMeasure2, ingredient: drinkObj.strIngredient2},
-            {amount: drinkObj.strMeasure3, ingredient: drinkObj.strIngredient3},
-            {amount: drinkObj.strMeasure4, ingredient: drinkObj.strIngredient4},
-            {amount: drinkObj.strMeasure5, ingredient: drinkObj.strIngredient5},
-            {amount: drinkObj.strMeasure6, ingredient: drinkObj.strIngredient6},
-            {amount: drinkObj.strMeasure7, ingredient: drinkObj.strIngredient7},
-            {amount: drinkObj.strMeasure8, ingredient: drinkObj.strIngredient8},
-            {amount: drinkObj.strMeasure9, ingredient: drinkObj.strIngredient9},
-            {amount: drinkObj.strMeasure10, ingredient: drinkObj.strIngredient10},
-            {amount: drinkObj.strMeasure11, ingredient: drinkObj.strIngredient11},
-            {amount: drinkObj.strMeasure12, ingredient: drinkObj.strIngredient12},
-            {amount: drinkObj.strMeasure13, ingredient: drinkObj.strIngredient13},
-            {amount: drinkObj.strMeasure14, ingredient: drinkObj.strIngredient14},
-            {amount: drinkObj.strMeasure15, ingredient: drinkObj.strIngredient15}
-        ]
+
+        let ingredients = getIngredients(drinkObj)
 
         res.render("index.ejs", {
             drink: drinkObj,
@@ -82,6 +57,27 @@ app.post("/search", async (req, res) => {
         console.log(error.message)
     }
 })
+
+function getIngredients(drinkObj){
+    let listIngredients = [
+        {amount: drinkObj.strMeasure1, ingredient: drinkObj.strIngredient1},
+        {amount: drinkObj.strMeasure2, ingredient: drinkObj.strIngredient2},
+        {amount: drinkObj.strMeasure3, ingredient: drinkObj.strIngredient3},
+        {amount: drinkObj.strMeasure4, ingredient: drinkObj.strIngredient4},
+        {amount: drinkObj.strMeasure5, ingredient: drinkObj.strIngredient5},
+        {amount: drinkObj.strMeasure6, ingredient: drinkObj.strIngredient6},
+        {amount: drinkObj.strMeasure7, ingredient: drinkObj.strIngredient7},
+        {amount: drinkObj.strMeasure8, ingredient: drinkObj.strIngredient8},
+        {amount: drinkObj.strMeasure9, ingredient: drinkObj.strIngredient9},
+        {amount: drinkObj.strMeasure10, ingredient: drinkObj.strIngredient10},
+        {amount: drinkObj.strMeasure11, ingredient: drinkObj.strIngredient11},
+        {amount: drinkObj.strMeasure12, ingredient: drinkObj.strIngredient12},
+        {amount: drinkObj.strMeasure13, ingredient: drinkObj.strIngredient13},
+        {amount: drinkObj.strMeasure14, ingredient: drinkObj.strIngredient14},
+        {amount: drinkObj.strMeasure15, ingredient: drinkObj.strIngredient15}
+    ]
+    return listIngredients
+}
 
 
 /**
