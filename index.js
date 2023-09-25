@@ -46,8 +46,9 @@ app.get("/", async (req, res) => {
  * drink cannot be found display a meesage to user.
  */
 app.post("/search", async (req, res) => {
+    let drinkName = req.body.input
     try{
-        const response = await axios.get(`${API_URL}search.php?s=${req.body.input}`)
+        const response = await axios.get(`${API_URL}search.php?s=${drinkName}`)
         // const result = response.data
         const drinkObj = response.data.drinks[0]
 
@@ -58,7 +59,19 @@ app.post("/search", async (req, res) => {
             ingredients: ingredients
         })
     } catch (error){
-        console.log("does this get called when a bad search value is entered?")
+        const noDrink = [
+            {strDrink: `Ain't Nothin Here That Goes By Name The Name Of ${drinkName}`,
+            strDrinkThumb: "/images/booze.png",
+            strInstructions: "Don't cry over missing booze! Just search again or click the button below for a random drink"}    
+        ]
+        let ingredients = [
+            {amount: "", ingredient: "Either you know about a drink that we don't know about"},
+            {amount: "", ingredient: "Or, you've already a had a few and typo'd your search"}
+        ]
+        res.render("index.ejs", {
+            drink: noDrink[0],
+            ingredients: ingredients
+        })
         console.log(error.message)
     }
 })
