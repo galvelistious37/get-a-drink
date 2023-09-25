@@ -2,9 +2,15 @@ import express from "express"
 import axios from "axios"
 import bodyParser from "body-parser"
 
+// Define constants
 const app = express()
 const port = 3000
 const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/"
+const errorName = "Ain't Nothin Here That Goes By Name The Name Of"
+const errorImage = "/images/booze.png"
+const errorInstrunctions = "Don't cry over missing booze! Just search again or click the button below for a random drink"
+const dontHave = "Either you know about a drink that we don't know about"
+const youreDrunk = "Or, you've already a had a few and typo'd your search"
 
 // Define middleware to parse ejs sheets and use static files
 app.use(bodyParser.urlencoded({extended: true}))
@@ -59,20 +65,25 @@ app.post("/search", async (req, res) => {
             ingredients: ingredients
         })
     } catch (error){
+        // The error message to the server for developer research
+        console.log(error.message)
+        // Create error messages in the format to be displayed in the ejs template
         const noDrink = [
-            {strDrink: `Ain't Nothin Here That Goes By Name The Name Of ${drinkName}`,
-            strDrinkThumb: "/images/booze.png",
-            strInstructions: "Don't cry over missing booze! Just search again or click the button below for a random drink"}    
+            {
+                strDrink: `${errorName} ${drinkName}`, 
+                strDrinkThumb: `${errorImage}`, 
+                strInstructions: `${errorInstrunctions}`
+            }    
         ]
-        let ingredients = [
-            {amount: "", ingredient: "Either you know about a drink that we don't know about"},
-            {amount: "", ingredient: "Or, you've already a had a few and typo'd your search"}
+        const ingredients = [
+            {amount: "", ingredient: `${dontHave}`},
+            {amount: "", ingredient: `${youreDrunk}`}
         ]
+        // Pass error messages to index.ejs template
         res.render("index.ejs", {
             drink: noDrink[0],
             ingredients: ingredients
         })
-        console.log(error.message)
     }
 })
 

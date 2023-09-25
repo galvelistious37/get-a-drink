@@ -1,11 +1,15 @@
 <%- include("partials/header.ejs") %>
 
 <div class="container col-xxl-8 px-4 pt-5 pb-2">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5 grayBack rounded-2">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5 grayBack rounded-2 justify-content-lg-start justify-content-center">
       <div class="col-10 col-sm-8 col-lg-6">
-        <img src="<%-drink.strDrinkThumb%>" class="d-block mx-lg-auto img-fluid rounded-2" alt="drink image" width="700" height="500" loading="lazy">
+        <img 
+          src="<%-drink.strDrinkThumb%>" 
+          class="d-block mx-lg-auto img-fluid rounded-2" 
+          alt="drink image" 
+          width="700" height="500" loading="lazy" />
       </div>
-      <div class="col-lg-6 grayBack">
+      <div class="col-lg-6 grayBack justify-content-lg-start justify-content-center">
         <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-5"><%= drink.strDrink%></h1>
         <ul>
             <% ingredients.forEach((ingredient) => { %>
@@ -14,7 +18,11 @@
         </ul>
         <p class="lead"><%= drink.strInstructions %></p>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" onclick="location.href='/'">Get A Drink!</button>
+          <button 
+            type="button" 
+            class="btn btn-dark btn-lg px-4 me-md-2" 
+            onclick="location.href='/'">Get A Drink!
+          </button>
         </div>
       </div>
     </div>
