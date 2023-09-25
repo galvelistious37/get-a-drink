@@ -4,6 +4,7 @@ import bodyParser from "body-parser"
 
 const app = express()
 const port = 3000
+const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/"
 
 // Define middleware to parse ejs sheets and use static files
 app.use(bodyParser.urlencoded({extended: true}))
@@ -13,13 +14,13 @@ app.use(express.static("public"))
 // https://www.thecocktaildb.com/api.php
 
 /**
- * Get root to establish a home page
+ * Get root directory to establish a home page
  */
 app.get("/", async (req, res) => {
     let hMessage = "Get a Drink!"
     try{
         // Call API to get JSON details for a random drink
-        const response = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+        const response = await axios.get(`${API_URL}random.php`)
         
         // Create local drinkObj from JSON 
         const drinkObj = response.data.drinks[0]
@@ -39,11 +40,14 @@ app.get("/", async (req, res) => {
 
 })
 
+/**
+ * Call the API function to search for and return
+ * a specific drinks based on user input. If
+ * drink cannot be found display a meesage to user.
+ */
 app.post("/search", async (req, res) => {
-    console.log("someting: " + req.body["input"])
-    
     try{
-        const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${req.body.input}`)
+        const response = await axios.get(`${API_URL}search.php?s=${req.body.input}`)
         // const result = response.data
         const drinkObj = response.data.drinks[0]
 
@@ -54,11 +58,19 @@ app.post("/search", async (req, res) => {
             ingredients: ingredients
         })
     } catch (error){
+        console.log("does this get called when a bad search value is entered?")
         console.log(error.message)
     }
 })
 
+/**
+ * Take the JSON drinkObj and return filtered list of all ingrendients and 
+ * required amounts which dos not include empty or null ingredients.
+ * @param {*} drinkObj 
+ * @returns 
+ */
 function getIngredients(drinkObj){
+    //Instantiate a list of all ingredient JSON values
     let listIngredients = [
         {amount: drinkObj.strMeasure1, ingredient: drinkObj.strIngredient1},
         {amount: drinkObj.strMeasure2, ingredient: drinkObj.strIngredient2},
@@ -76,7 +88,16 @@ function getIngredients(drinkObj){
         {amount: drinkObj.strMeasure14, ingredient: drinkObj.strIngredient14},
         {amount: drinkObj.strMeasure15, ingredient: drinkObj.strIngredient15}
     ]
-    return listIngredients
+    // Instantiate filtered list object
+    let filteredList = []
+    // Filter out null/empty ingredients
+    listIngredients.forEach((ing) => {
+        if(ing.ingredient != null && ing.ingredient != ""){
+            filteredList.push({amount: ing.amount, ingredient: ing.ingredient})
+        }
+    })
+    // Return the filtered list
+    return filteredList
 }
 
 

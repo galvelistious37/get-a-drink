@@ -9,9 +9,7 @@
         <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-5"><%= drink.strDrink%></h1>
         <ul>
             <% ingredients.forEach((ingredient) => { %>
-                <% if(ingredient.ingredient != null && ingredient.ingredient != "") {%>
-                    <li><%= ingredient.ingredient %> <%= ingredient.amount %></li>    
-                <% } %>
+              <li><%= ingredient.ingredient %> <%= ingredient.amount %></li>
             <% }) %>
         </ul>
         <p class="lead"><%= drink.strInstructions %></p>
