@@ -6,7 +6,7 @@ import bodyParser from "body-parser"
 const app = express()
 const port = 3000
 const API_URL = "https://www.thecocktaildb.com/api/json/v1/1/"
-const errorName = "Ain't Nothin Here That Goes By Name The Name Of"
+const errorName = "Ain't Nothin Here That Goes By The Name Of"
 const errorImage = "/images/booze.png"
 const errorInstrunctions = "Don't cry over missing booze! Just search again or click the button below for a random drink"
 const dontHave = "Either you know about a drink that we don't know about"
@@ -70,7 +70,7 @@ app.post("/search", async (req, res) => {
         // Create error messages in the format to be displayed in the ejs template
         const noDrink = [
             {
-                strDrink: `${errorName} ${drinkName}`, 
+                strDrink: `${errorName} "${drinkName}"`, 
                 strDrinkThumb: `${errorImage}`, 
                 strInstructions: `${errorInstrunctions}`
             }    
